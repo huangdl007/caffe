@@ -269,7 +269,7 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
-// LayerParameter next available layer-specific ID: 137 (last added: reduction_param)
+// LayerParameter next available layer-specific ID: 138 (last added: depth_data_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type

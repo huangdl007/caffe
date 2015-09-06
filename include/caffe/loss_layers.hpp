@@ -301,6 +301,34 @@ class EuclideanLossLayer : public LossLayer<Dtype> {
   Blob<Dtype> diff_;
 };
 
+//Depths Loss Layer
+template <typename Dtype>
+class DepthsLossLayer : public LossLayer<Dtype> {
+ public:
+  explicit DepthsLossLayer(const LayerParameter& param)
+      : LossLayer<Dtype>(param), diff_() {  gamma = 0.5;  }
+  virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
+
+  virtual inline const char* type() const { return "DepthsLoss"; }
+  
+
+ protected:
+  /// @copydoc DepthsLossLayer
+  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
+  //virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+  //    const vector<Blob<Dtype>*>& top);
+
+  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
+      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+  //virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
+  //    const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+
+  Blob<Dtype> diff_;
+  double gamma;
+};
+
 /**
  * @brief Computes the hinge loss for a one-of-many classification task.
  *

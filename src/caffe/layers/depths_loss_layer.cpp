@@ -9,10 +9,10 @@ namespace caffe {
 
 	template <typename Dtype>
 	void DepthsLossLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
-		LossLayer<Dtype>::RASEO2_SharePhoneNumbers(bottom, top);
+		LossLayer<Dtype>::Reshape(bottom, top);
 		CHECK_EQ(bottom[0]->count(1), bottom[1]->count(1))
 			<< "Inputs must have the same dimension.";
-		diff_ReshapeLike(*bottom[0]);
+		diff_.ReshapeLike(*bottom[0]);
 	}
 
 	template <typename Dtype>
@@ -45,11 +45,14 @@ namespace caffe {
 				log_sum += diff_data[i];
 			}
 
-			double gamma = 0.5;
+			//double gamma = 0.5;
 			Dtype loss = dot / bottom[0]->num() - gamma * log_sum * log_sum / bottom[0]->num() / bottom[0]->num();
 
 			top[0]->mutable_cpu_data()[0] = loss;
 
+			//free memory space
+			delete bottom0_log;
+			delete bootom1_log;
 	}
 
 	template <typename Dtype>
@@ -70,13 +73,20 @@ namespace caffe {
 					log_sum += diff_data[i];
 				}
 
-				Dtype* bottom_diff = bottom[0].mutable_cpu_diff();
-				Dtype* bottom_data = bottom[0].mutable_cpu_data();
+				Dtype* bottom_diff = bottom[0]->mutable_cpu_diff();
+				Dtype* bottom_data = bottom[0]->mutable_cpu_data();
 				for (int i = 0; i < count; i++) {
 					bottom_diff[i] = Dtype(2) * diff_data[i] / num / bottom_data[i] - Dtype(2) * gamma * log_sum / num / num / diff_data[i];
 				}
 				//ta da
 			}
 	}
+
+//#ifdef CPU_ONLY
+//STUB_GPU(DepthsLossLayer);
+//#endif
+
+INSTANTIATE_CLASS(DepthsLossLayer);
+REGISTER_LAYER_CLASS(DepthsLoss);
 
 } // namespace caffe
