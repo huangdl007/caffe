@@ -1,12 +1,12 @@
 name: "NYUDepths"
 layer{
-	name: "depths_data"
-	type: "DepthsData"
+	name: "depth_data"
+	type: "DepthData"
 	top: "data"
 	top: "groundtruth_depth"
-	depths_data_param{
-		source: "XXX"
-		batch_size: XX
+	depth_data_param{
+		source: "source.txt"
+		batch_size: 64
 	}
 }
 layer{

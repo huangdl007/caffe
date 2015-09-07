@@ -303,18 +303,18 @@ class EuclideanLossLayer : public LossLayer<Dtype> {
 
 //Depths Loss Layer
 template <typename Dtype>
-class DepthsLossLayer : public LossLayer<Dtype> {
+class DepthLossLayer : public LossLayer<Dtype> {
  public:
-  explicit DepthsLossLayer(const LayerParameter& param)
+  explicit DepthLossLayer(const LayerParameter& param)
       : LossLayer<Dtype>(param), diff_() {  gamma = 0.5;  }
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline const char* type() const { return "DepthsLoss"; }
+  virtual inline const char* type() const { return "DepthLoss"; }
   
 
  protected:
-  /// @copydoc DepthsLossLayer
+  /// @copydoc DepthLossLayer
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
   //virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,

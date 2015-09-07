@@ -8,7 +8,7 @@
 namespace caffe {
 
 	template <typename Dtype>
-	void DepthsLossLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
+	void DepthLossLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
 		LossLayer<Dtype>::Reshape(bottom, top);
 		CHECK_EQ(bottom[0]->count(1), bottom[1]->count(1))
 			<< "Inputs must have the same dimension.";
@@ -16,7 +16,7 @@ namespace caffe {
 	}
 
 	template <typename Dtype>
-	void DepthsLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+	void DepthLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
 		const vector<Blob<Dtype>*>& top) {
 			int count = bottom[0]->count();
 			Dtype* bottom0_log = new Dtype(count);
@@ -56,7 +56,7 @@ namespace caffe {
 	}
 
 	template <typename Dtype>
-	void DepthsLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
+	void DepthLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
 		const vector<bool>& propagate_down,
 		const vector<Blob<Dtype>*>& bottom) {
 			if (propagate_down[1]) {
@@ -86,7 +86,7 @@ namespace caffe {
 //STUB_GPU(DepthsLossLayer);
 //#endif
 
-INSTANTIATE_CLASS(DepthsLossLayer);
-REGISTER_LAYER_CLASS(DepthsLoss);
+INSTANTIATE_CLASS(DepthLossLayer);
+REGISTER_LAYER_CLASS(DepthLoss);
 
 } // namespace caffe
